@@ -13,8 +13,9 @@
       "illuminate/http" : "5.1.*",
       "craigh/file-uploader" : "dev-master"
     },
-  "psr-4": {
-    "Craigh\\LaravelFileUploader\\": "Craigh/LaravelFileUploader/src"
+  "autoload": {
+    "psr-4": {
+      "Craigh\\LaravelFileUploader\\": "src"
+    }
   }
-
 }
