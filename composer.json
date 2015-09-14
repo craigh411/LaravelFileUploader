@@ -1,0 +1,20 @@
+{
+    "name": "craigh/laravel-file-uploader",
+    "description": "Web Form File Uploader for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Craig Humphreys"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+      "illuminate/http" : "5.1.*",
+      "craigh/file-uploader" : "dev-master"
+    },
+  "psr-4": {
+    "Craigh\\LaravelFileUploader\\": "Craigh/LaravelFileUploader/src"
+  }
+
+}
