@@ -1,8 +1,7 @@
 # Laravel File Uploader
 
 Laravel File Uploader is a web form upload manager for Laravel. This package provides additional files for [FileUploader\FileUploader package](https://github.com/craigh411/FileUploader) for use within the Laravel framework.
-FileUploader uses the same `symfony/HttpFoundation` package used by laravel for file uploads, but adds some additional functionality to make
-file uploads a breeze.
+FileUploader uses the same `symfony/HttpFoundation` package used by laravel for file uploads, but adds some additional functionality to make file uploads a breeze.
 
 ## Features
 
@@ -31,129 +30,45 @@ You will then be able to use the `Upload` alias to use the facade.
 
 ## Basic Usage
 
-If you've added the alias for the facade you can simply use:
+Beacuse LaravelFileUploader uses the `symfony/HttpFoundation` you can pass $request->file('input_name') directly into the file method.
+
+If you've added the alias for the facade, then you can use the following:
 
 `Upload::file($request->file('file'))->move();`
 
-from inside your classes.
+You will need to `use Upload` to get this to work if you are working inside a namespaced class.
 
-If you are not using the facade you can type hint LaravelFileUploader in your method or constructor as follows:
+If you are not using the facade you can type hint LaravelFileUploader in your classes methods or constructor or if you prefer you can simply call:
 
+`$upload = App::make('upload');`
+
+### Changing Settings Directly
+ 
+If you want to change the default settings then you can simply chain them together like so (See Methods at the bottom for the full settings list):
+ 
 ```
-private $upload;
-
-function _construct(LaravelFileUploader $upload){
-    $this->upload = $upload;
-}
-
-public function store(Request $request){
-    $this->upload->file($request->file('file'))->move();
-}
-```
-
-or if you prefer you can simple call:
-
-'$upload = App::make('upload');'
-
-from inside your method.
-
-### Functions
-
- ##### uploadPath(string)
- Sets the upload path. This can also be set via the second parameter on the constructor (defaults to current directory)
- 
- `$uploader->uploadPath('path/to/dir');`
- 
- ##### overwrite(boolean)
- Set to true to allow overwriting of files with the same name (default: false)
- 
- `$uploader->overwrite(true);`
- 
- ##### allowedMimeTypes(array) 
- Pass in an array of allowed mime types, everything else will be blocked. When empty all file types will be allowed unless
- explicitly blocked.
- 
- `$uploader->allowedMimeTypes(['image/jpeg,'image/png', 'image/gif']);`
- 
- ##### blockedMimeTypes(array)
- You can also block file types if you prefer. Pass in an array of mime types you want to block
- 
- `$uploader->blockedMimeTypes(['application/x-msdownload']);`
- 
- 
- ##### maxFileSize($size, $unit)
- The maximum file size you want to allow, expects size to be a number and unit to be either:
- - B - Byte
- - KB - Kilobyte
- - MB - Megabyte
- 
- `$uploader->maxFileSize(5, 'MB');`
- 
- You can also use the words BYTE, BYTES, KILOBYTE, KILOBYTES, MEGABYTE or MEGABYTES if you prefer:
- 
- `$uploader->maxFileSize(1, 'MEGABYTE');`
- 
- ##### createDirs(bool)
- If set to true this will recursively create any specified directories if they do not exist (default: false)
- 
- `$uploader->createDirs(true);`
- 
- ##### makeFilenameUnique(bool)
- If set to true this will make the filename unique by appending a _{number} to the end.
- 
- `$uploader->makeFilenameUnique(true);`
- 
- ##### filename(string)
- By default the filename will be a sanitised version of the uploaded filename. Use this method if you want to set your own filename.
- 
- `$uploader->filename('myFile.txt');`
- 
- **Note:** When using this method the filename will not be sanatised, if you want to sanatise the filename you can use the
- sanitizeFilename() method
- 
- ##### sanitizeFilename()
- Sanitises the given filename by removing any dangerous characters and replaces any spaces with an underscore. You will only need to call this if you want to set your
- own filenames using the filename() method, otherwise this method is called automatically.
- You should also be aware that this call will need to be made after you set your filename:
- 
- ```
- $uploader->filename('my%$crazy@filename.txt')->sanitizeFilename();
- ```
- 
- ##### move() 
-Moves the file to it's destination and returns the upload path.
- 
- `$uploadPath = $uploader->move();`
- 
- You can also use upload() which is an alias of move if you feel it's wording is more appropriate:
- 
- `$uploadPath = $uploader->upload();`
- 
- ### Chaining
- 
- The easiest way to use LaravelFileUploader is to use chaining, e.g.
- 
- ```
- Upload::file($request->all())
- ->createDirs(true)
- ->maxFileSize(5,'MB')
- ->allowedMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
- ->move();
+Upload::file($request->all())
+->createDirs(true)
+->maxFileSize(5,'MB')
+->allowedMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
+->move();
 ```
 
-### Configuring using Inheritance
+<b>Note: The move() method returns the upload path.</b>
 
-For a cleaner configuration you can also extend the LaravelFileUploader class which gives you access to the following
+### Configuring Using Inheritance
+
+For a clean configuration you can extend the LaravelFileUploader class which gives you access to the following
 protected variables:
 
 ```
-protected $uploadPath = '/';
-protected $allowedMimeTypes = [];
-protected $blockedMimeTypes = [];
-protected $maxFileSize = 1000000;
-protected $makeFilenameUnique = false;
-protected $overwrite = false;
-protected $createDirIfNotExists = false;
+protected $uploadPath; // upload loaction
+protected $allowedMimeTypes = []; // Only allow these file to be uploaded
+protected $blockedMimeTypes = []; // Don't allow these files to be uploaded
+protected $maxFileSize = 1000000; // in bytes
+protected $makeFilenameUnique = false; // Make the filename unique if two files have the same name
+protected $overwrite = false; // Allow overwriting of files with the same name
+protected $createDirs = false; // Allow the automatic creation of any upload directories
 ```
 
 e.g. For an ImageUploader you may do the following:
@@ -161,8 +76,8 @@ e.g. For an ImageUploader you may do the following:
 class ImageUploader extends LaravelFileUploader{
     
    protected $uploadPath = 'images/';
-   protected $maxFileSize = 5+6e;
-   protected $createDirIfNotExists = true;
+   protected $maxFileSize = 5+6e; // 5 MB
+   protected $createDirs = true;
    protected $makeFilenameUnique = true;
    
    protected $allowedMimeTypes = [
@@ -174,7 +89,7 @@ class ImageUploader extends LaravelFileUploader{
 }
 ```
 
-This can now be used by method or constructor injection in your Controllers which will automatically use those defaults:
+This can now be used by method or constructor injection in your Controllers which will automatically use those values as defaults:
 
 ```
 private $uploader;
@@ -191,7 +106,7 @@ public function store($request){
 ## FileUploader\Uploader Interface
 
 You can also bind to the FileUploader\Uploader interface. To do this place the following inside
-the register method of your AppServiceProvider (providers\AppServiceProvider.php):
+the register() method of your AppServiceProvider:
 
 `App::bind('FileUploader\Contracts\Uploader','Craigh\LaravelFileUploader\LaravelFileUploader');`;
 
@@ -204,9 +119,85 @@ public __constructor(Uploader $uploader){
 }
 ```
 
-This then allows you to swap out your own implementations by simply by changing the bound class e.g.:
+Now you can swap out your own implementations by simply by changing the bound class e.g.:
 
 `App::bind('FileUploader\Contracts\Uploader','Your\Namespace\YourFileUploader');`;
+
+
+### Methods
+
+##### uploadPath(string)
+ Sets the upload path. This can also be set via the second parameter on the constructor (defaults to the public directory).
+ 
+ `$uploader->uploadPath('path/to/dir');`
+ 
+ 
+*Note:* The public folder will be the base directory for your uploads, so if you set your upload path to 'images' (`$uploader->uploadPath('images');`) this will upload to the public/images folder
+
+##### overwrite(boolean)
+ Set to true to allow overwriting of files with the same name (default: false)
+ 
+ `$uploader->overwrite(true);`
+ 
+##### allowedMimeTypes(array) 
+ Pass in an array of allowed mime types, everything else will be blocked. When empty all file types will be allowed unless
+ explicitly blocked.
+ 
+ `$uploader->allowedMimeTypes(['image/jpeg,'image/png', 'image/gif']);`
+ 
+##### blockedMimeTypes(array)
+ You can also block file types if you prefer. Pass in an array of mime types you want to block
+ 
+ `$uploader->blockedMimeTypes(['application/x-msdownload']);`
+ 
+ 
+##### maxFileSize($size, $unit)
+ The maximum file size you want to allow, expects size to be a number and unit to be either:
+ - B - Byte
+ - KB - Kilobyte
+ - MB - Megabyte
+ 
+ `$uploader->maxFileSize(5, 'MB');`
+ 
+ You can also use the words BYTE, BYTES, KILOBYTE, KILOBYTES, MEGABYTE or MEGABYTES if you prefer:
+ 
+ `$uploader->maxFileSize(1, 'MEGABYTE');`
+ 
+##### createDirs(bool)
+ If set to true this will recursively create any specified directories if they do not exist (default: false)
+ 
+ `$uploader->createDirs(true);`
+ 
+##### makeFilenameUnique(bool)
+ If set to true this will make the filename unique by appending a _{number} to the end.
+ 
+ `$uploader->makeFilenameUnique(true);`
+ 
+##### filename(string)
+ By default the filename will be a sanitised version of the uploaded filename. Use this method if you want to set your own filename.
+ 
+ `$uploader->filename('myFile.txt');`
+ 
+ **Note:** When using this method the filename will not be sanatised, if you want to sanatise the filename you can use the
+ sanitizeFilename() method
+ 
+##### sanitizeFilename()
+ Sanitises the given filename by removing any dangerous characters and replaces any spaces with an underscore. You will only need to call this if you want to set your
+ own filenames using the filename() method, otherwise this method is called automatically.
+ You should also be aware that this call will need to be made after you set your filename:
+ 
+ ```
+ $uploader->filename('my%$crazy@filename.txt')->sanitizeFilename();
+ ```
+ 
+##### move() 
+Moves the file to it's destination and returns the upload path.
+ 
+`$uploadPath = $uploader->move();`
+ 
+You can also use upload() which is an alias of move if you feel it's wording is more appropriate:
+ 
+`$uploadPath = $uploader->upload();`
 
 That's it!
 
