@@ -1,7 +1,7 @@
 <?php
-namespace Craigh\LaravelFileUploader;
+namespace Humps\LaravelFileUploader;
 
-use FileUploader\FileUploader;
+use Humps\FileUploader\FileUploader;
 use Illuminate\Support\Facades\App;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;

@@ -1,12 +1,12 @@
 <?php
-namespace Craigh\LaravelFileUploader;
+namespace Humps\LaravelFileUploader;
 
-use FileUploader\FileUploader;
+use Humps\FileUploader\FileUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LaravelFileUploader extends FileUploader {
 
-	protected $uploadPath;
+	protected $uploadDir;
 
 	/**
 	 * Override parent constructor to take no parameters
@@ -14,6 +14,6 @@ class LaravelFileUploader extends FileUploader {
 	public function __construct()
 	{
 		// Set the default path to the public folder
-		$this->uploadPath = $this->uploadPath ?: public_path();
+		$this->uploadDir = $this->uploadDir ?: public_path();
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Craigh\LaravelFileUploader\Facades;
+namespace Humps\LaravelFileUploader\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
