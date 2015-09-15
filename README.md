@@ -18,7 +18,7 @@ To install simply require `craigh/laravel-file-uploader` to you composer.json fi
 
 You should also register the service provider by adding the following to providers in `config/app.php`:
                     
-`Craigh\LaravelFileUploader\FileUploaderServiceProvider::class`
+`Humps\LaravelFileUploader\FileUploaderServiceProvider::class`
 
 **Note:** At the moment you will need to 'require-dev'and manually add `craigh/file-uploader` with 'require-dev' in your composer.json.
 
@@ -26,7 +26,7 @@ You should also register the service provider by adding the following to provide
 
 While not required, if you want to use the facade you need to add the following to aliases in `config/app.php`:
 
-`'Upload'	=> Craigh\LaravelFileUploader\Facades\UploaderFacade::class`
+`'Upload'	=> Humps\LaravelFileUploader\Facades\UploaderFacade::class`
 
 You will then be able to use the `Upload` alias to use the facade.
 
@@ -64,7 +64,7 @@ For a clean configuration you can extend the LaravelFileUploader class which giv
 protected variables:
 
 ```
-protected $uploadPath; // Upload location
+protected $uploadDir; // Upload directory
 protected $allowedMimeTypes = []; // Only allow these file to be uploaded
 protected $blockedMimeTypes = []; // Don't allow these files to be uploaded
 protected $maxFileSize = 1000000; // In bytes
@@ -75,11 +75,11 @@ protected $createDirs = false; // Allow the automatic creation of any upload dir
 
 e.g. For an ImageUploader you may do the following:
 ```
-use Craigh\LaravelFileUploader\LaravelFileUploader;
+use Humps\LaravelFileUploader\LaravelFileUploader;
 
 class ImageUploader extends LaravelFileUploader{
     
-   protected $uploadPath = 'images/';
+   protected $uploadDir = 'images/';
    protected $maxFileSize = 5+6e; // 5 MB
    protected $createDirs = true;
    protected $makeFilenameUnique = true;
@@ -105,22 +105,22 @@ public __constructor(ImageUploader $upload){
     $this->upload = $upload;
 }
 
-public function store($request){
+public function store(Request $request){
     $this->upload->file($request->file('file'))->move();
 }
 ```
 
-## FileUploader\Uploader Interface
+## Humps\FileUploader\Uploader Interface
 
-You can also bind to the FileUploader\Uploader interface. To do this place the following inside
+You can also bind to the Humps\FileUploader\Uploader interface. To do this place the following inside
 the register() method of your AppServiceProvider:
 
-`App::bind('FileUploader\Contracts\Uploader','Craigh\LaravelFileUploader\LaravelFileUploader');`;
+`App::bind('Humps\FileUploader\Contracts\Uploader','Humps\LaravelFileUploader\LaravelFileUploader');`;
 
 You can then type hint the interface instead of the concrete class:
 
 ```
-use FileUploader\Uploader;
+use Humps\FileUploader\Uploader;
 
 private $upload;
 
@@ -129,20 +129,20 @@ public __constructor(Uploader $upload){
 }
 ```
 
-Now you can swap out your own implementations by simply by changing the bound class e.g.:
+Now you can swap out your own implementations simply by changing the bound class e.g.:
 
-`App::bind('FileUploader\Contracts\Uploader','Your\Namespace\YourFileUploader');`;
+`App::bind('Humps\FileUploader\Contracts\Uploader','Your\Namespace\YourFileUploader');`;
 
 
 ### Methods
 
-##### uploadPath(string)
- Sets the upload path. This can also be set via the second parameter on the constructor (defaults to the public directory).
+##### uploadDir(string)
+ Sets the upload directory. It will also append any required '/' if it is not set, so both 'path/to/dir' and 'path/to/dir/' will work.
  
- `$upload->uploadPath('path/to/dir');`
+`$upload->uploadDir('path/to/dir');`
  
  
-**Note:** The public folder will be the base directory for your uploads, so if you set your upload path to 'images' (`$upload->uploadPath('images');`) this will upload to the public/images folder
+**Note:** The public folder will be the base directory for your uploads, so if you set your upload path to 'images' (`$upload->uploadDir('images');`) this will upload to the public/images folder.
 
 ##### overwrite(boolean)
  Set to true to allow overwriting of files with the same name (default: false)
@@ -152,7 +152,7 @@ Now you can swap out your own implementations by simply by changing the bound cl
 ##### allowedMimeTypes(array) 
 Pass in an array of allowed mime types, everything else will be blocked. When empty all file types will be allowedunless  explicitly blocked.
  
-`$upload->allowedMimeTypes(['image/jpeg,'image/png', 'image/gif']);`
+`$upload->allowedMimeTypes(['image/jpeg, 'image/png', 'image/gif']);`
  
 ##### blockedMimeTypes(array)
 You can also block file types if you prefer. Pass in an array of mime types you want to block
@@ -178,7 +178,7 @@ If set to true this will recursively create any specified directories if they do
 `$upload->createDirs(true);`
  
 ##### makeFilenameUnique(bool)
- If set to true this will make the filename unique by appending a _{number} to the end.
+If set to true this will make the filename unique by appending a _{number} to the end.
  
 `$upload->makeFilenameUnique(true);`
  
@@ -187,10 +187,10 @@ By default the filename will be a sanitised version of the uploaded filename. Us
  
 `$upload->filename('myFile.txt');`
  
-**Note:** When using this method the filename will not be sanatised, if you want to sanatise the filename you can use the msanitizeFilename() method
+**Note:** When using this method the filename will not be sanatised, if you want to sanatise the filename you can use the sanitizeFilename() method.
  
 ##### sanitizeFilename()
-Sanitises the given filename by removing any dangerous characters and replaces any spaces with an underscore. You will only need to call this if you want to set your
+Sanitises the given filename by removing any non alpha numeric characters and replacing any spaces with an underscore. You will only need to call this if you want to set your
 own filenames using the filename() method, otherwise this method is called automatically.
 You should also be aware that this call will need to be made after you set your filename:
  
@@ -201,11 +201,11 @@ $upload->filename('my%$crazy@filename.txt')->sanitizeFilename();
 ##### move() 
 Moves the file to it's destination and returns the upload path.
  
-`$uploadPath = $uploader->move();`
+`$uploadPath = $upload->move();`
  
-You can also use upload() which is an alias of move if you feel the wording is more appropriate:
+You can also use `upload()` which is an alias of `move()` if you feel the wording is more appropriate:
  
-`$uploadPath = $uploader->upload();`
+`$uploadPath = $upload->upload();`
 
 That's it!
 
