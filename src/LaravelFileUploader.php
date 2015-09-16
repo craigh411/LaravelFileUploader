@@ -12,7 +12,10 @@ class LaravelFileUploader extends FileUploader {
 	 */
 	public function __construct()
 	{
-		// Set the default path to the public folder
-		$this->uploadDir = $this->uploadDir ?: public_path().'/';
+		/**
+		 * Set the upload directory to one set by the child class
+		 * or the 'public/' folder if instantiated directly
+		 */
+		$this->uploadDir = $this->uploadDir ?: public_path() . '/';
 	}
 }

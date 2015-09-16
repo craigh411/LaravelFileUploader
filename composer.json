@@ -1,21 +1,28 @@
 {
-    "name": "craigh/laravel-file-uploader",
-    "description": "Web Form File Uploader for Laravel",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Craig Humphreys"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-      "illuminate/http" : "5.1.*",
-      "craigh/file-uploader" : "dev-master"
-    },
+  "name": "craigh/laravel-file-uploader",
+  "description": "Web Form File Uploader for Laravel",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Craig Humphreys"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "require": {
+    "illuminate/support": "5.1.*",
+    "craigh/file-uploader": "dev-master"
+  },
   "autoload": {
     "psr-4": {
       "Humps\\LaravelFileUploader\\": "src"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Humps\\LaravelFileUploader\\Tests\\": "tests"
+      }
     }
   }
 }
