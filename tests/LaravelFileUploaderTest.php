@@ -28,7 +28,7 @@ class LaravelFileUploaderTest extends PHPUnit_Framework_TestCase {
 	}
 }
 
-// Little test class to mock laravel extender
+// Little test class extending LaravelFileUploader
 class UploaderTest extends LaravelFileUploader {
 	protected $uploadDir = 'uploads/';
 }
