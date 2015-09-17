@@ -14,7 +14,16 @@ FileUploader uses the same `symfony/HttpFoundation` package used by laravel for 
 
 ## Installation
 
-To install simply require `craigh/laravel-file-uploader` in your composer.json file and run composer update.
+Install via Composer with:
+
+`composer require craigh/laravel-file-uploader`
+
+or you can add:
+
+`"craigh/laravel-file-uploader": "~1.0"` 
+
+to the require section of your `composer.json` file and run `composer update` from the command line.
+
 
 You should also register the service provider by adding the following to providers in `config/app.php`:
                     
