@@ -1,4 +1,4 @@
-# Laravel 5.1 File Uploader
+# Laravel File Uploader
 
 Laravel File Uploader is a web form upload manager for Laravel 5.1. This package provides additional files for the [craigh411/FileUploader](https://github.com/craigh411/FileUploader) package for use within the Laravel framework.
 FileUploader uses the same `symfony/HttpFoundation` package used by laravel for file uploads, so is easily integrated, but adds some additional functionality to make file uploads a breeze.
