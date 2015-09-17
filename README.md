@@ -56,7 +56,7 @@ If you are not using the facade you can type hint LaravelFileUploader in your cl
 If you want to change the default settings then you can simply chain them together like so (See Methods at the bottom for the full settings list):
  
 ```
-Upload::file($request->all())
+Upload::file($request->file('file')))
 ->createDirs(true)
 ->maxFileSize(5,'MB')
 ->allowedMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
