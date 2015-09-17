@@ -18,11 +18,11 @@
   "autoload": {
     "psr-4": {
       "Humps\\LaravelFileUploader\\": "src"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Humps\\LaravelFileUploader\\Tests\\": "tests"
-      }
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Humps\\LaravelFileUploader\\Tests\\": "tests"
     }
   }
 }
