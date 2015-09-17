@@ -3,6 +3,7 @@
   "description": "Web Form File Uploader for Laravel",
   "type": "library",
   "license": "MIT",
+  "version": 1.0,
   "authors": [
     {
       "name": "Craig Humphreys"
