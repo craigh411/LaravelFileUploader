@@ -46,7 +46,7 @@ If you are not using the facade you can type hint LaravelFileUploader in your cl
  
 If you want to change the default settings then you can simply chain them together like so (See Methods at the bottom for the full settings list):
  
-```
+```php
 Upload::file($request->all())
 ->createDirs(true)
 ->maxFileSize(5,'MB')
@@ -61,7 +61,7 @@ Upload::file($request->all())
 For a clean configuration you can extend the LaravelFileUploader class which gives you access to the following
 protected variables:
 
-```
+```php
 protected $uploadDir; // Upload directory
 protected $allowedMimeTypes = []; // Only allow these file to be uploaded
 protected $blockedMimeTypes = []; // Don't allow these files to be uploaded
@@ -72,7 +72,7 @@ protected $createDirs = false; // Allow the automatic creation of any upload dir
 ```
 
 e.g. For an ImageUploader you may do the following:
-```
+```php
 use Humps\LaravelFileUploader\LaravelFileUploader;
 
 class ImageUploader extends LaravelFileUploader{
@@ -93,7 +93,7 @@ class ImageUploader extends LaravelFileUploader{
 
 This can now be used in your classes which will automatically use those values as defaults:
 
-```
+```php
 /**
  * Example using dependency injection
  **/
@@ -107,6 +107,45 @@ public function store(Request $request){
     $this->upload->file($request->file('file'))->move();
 }
 ```
+
+## Handling Exceptions
+
+`LaravelFileUploader` is shipped with an exception handler which redirects the user back to the page with any errors. To use the exception handler simply add the following to the `app\Exceptions\Handler.php` files' `render()` method:
+
+```php
+$uploadExceptionHandler = app()->make('uploadExceptionHandler', [$e]);
+if ($errors = $uploadExceptionHandler->getUploadErrors()) {
+  return $errors;
+}
+```
+
+You can retreive the error message in your view from the `$errors` variable: (See: [http://laravel.com/docs/5.1/validation#quick-displaying-the-validation-errors](http://laravel.com/docs/5.1/validation#quick-displaying-the-validation-errors))
+
+### Custom Error Messages
+
+If you would like to create your own custom error messages for when an exception is thrown, you will need to do:
+
+`php artisan vendor:publish`
+
+which will publish the exceptions file to `app\resources\lang\vendor\laravel-file-uploader\en` which contains the error messages which are displayed for each exception.
+
+**Note:** There currently aren't any localised error messages, so you will need to create these yourself if you do not want to  use English.
+
+### Custom Exception Behaviour
+
+If you would like to use the `LaravelFileUploaderExceptionHandler` but don't like the default behaviour of redirecting the user back, then you should override the `response()` method of the exception handler by extending the class. You will of course, need to change the code in your `boot()` method to reference your child class.
+
+```php
+use Humps\LaravelFileUploader\LaravelFileUploaderExceptionHandler as BaseHandler;
+
+class CustomUploadExceptionHandler extends BaseHandler {
+  protected function response(){
+    die($this->error);
+  }
+}
+
+```
+
 
 ## Humps\FileUploader\Uploader Interface
 
