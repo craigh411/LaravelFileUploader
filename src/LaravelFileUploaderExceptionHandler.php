@@ -21,7 +21,8 @@ class LaravelFileUploaderExceptionHandler
         $this->exception = $e;
     }
 
-    public function uploadErrors()
+
+    public function getUploadErrors()
     {
         if ($this->exception instanceof DirectoryNotFoundException) {
             $this->error = trans('laravel-file-uploader::exceptions.directoryNotFound');
@@ -40,7 +41,7 @@ class LaravelFileUploaderExceptionHandler
             return $this->response();
         }
 
-        return null;
+        return false;
     }
 
     /**

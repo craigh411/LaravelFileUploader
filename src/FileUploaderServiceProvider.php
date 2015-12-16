@@ -33,9 +33,9 @@ class FileUploaderServiceProvider extends ServiceProvider {
 			return new LaravelFileUploader;
 		});
 
-		App::bind('uploadExceptionsHandler', function ($app, $params)
+		App::bind('uploadExceptionHandler', function ($app, $params)
 		{
-			return new LaravelFileUploaderExceptionsHandler($params[0]);
+			return new LaravelFileUploaderExceptionHandler($params[0]);
 		});
 
 	}
