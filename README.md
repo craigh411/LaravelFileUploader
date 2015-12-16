@@ -1,6 +1,6 @@
 # Laravel File Uploader
 
-Laravel File Uploader is a web form upload manager for Laravel 5.1. This package provides additional files for the [craigh411/FileUploader](https://github.com/craigh411/FileUploader) package for use within the Laravel framework.
+Laravel File Uploader is a web form upload manager for Laravel. This package provides additional files for the [craigh411/FileUploader](https://github.com/craigh411/FileUploader) package for use within the Laravel framework.
 FileUploader uses the same `symfony/HttpFoundation` package used by laravel for file uploads, so is easily integrated, but adds some additional functionality to make file uploads a breeze.
 
 ## Features
@@ -14,16 +14,7 @@ FileUploader uses the same `symfony/HttpFoundation` package used by laravel for 
 
 ## Installation
 
-Install via Composer with:
-
-`composer require craigh/laravel-file-uploader`
-
-or you can add:
-
-`"craigh/laravel-file-uploader": "~1.0"` 
-
-to the require section of your `composer.json` file and run `composer update` from the command line.
-
+To install simply require `craigh/laravel-file-uploader` in your composer.json file and run composer update.
 
 You should also register the service provider by adding the following to providers in `config/app.php`:
                     
@@ -55,12 +46,8 @@ If you are not using the facade you can type hint LaravelFileUploader in your cl
  
 If you want to change the default settings then you can simply chain them together like so (See Methods at the bottom for the full settings list):
  
-
 ```php
 Upload::file($request->all())
-
-Upload::file($request->file('file')))
->>>>>>> f47719009a680b6178c4df770611499db5769fbe
 ->createDirs(true)
 ->maxFileSize(5,'MB')
 ->allowedMimeTypes(['image/jpeg', 'image/png', 'image/gif'])
@@ -258,12 +245,3 @@ You can also use `upload()` which is an alias of `move()` if you feel the wordin
 `$uploadPath = $upload->upload();`
 
 That's it!
-
-
-
-
-
-
-
-
-
