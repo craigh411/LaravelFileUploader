@@ -11,7 +11,7 @@ use Humps\FileUploader\Exceptions\NoOverwritePermissionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class LaravelFileUploaderExceptionsHandler
+class LaravelFileUploaderExceptionHandler
 {
     protected $exception;
     protected $error;
