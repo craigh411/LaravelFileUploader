@@ -12,7 +12,7 @@
     "phpunit/phpunit": "~4.0"
   },
   "require": {
-    "illuminate/support": "5.1.*",
+    "illuminate/support": "5.*",
     "craigh/file-uploader": "~1.0"
   },
   "autoload": {
