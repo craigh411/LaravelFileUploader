@@ -99,7 +99,7 @@ This can now be used in your classes which will automatically use those values a
  **/
 private $upload;
 
-public __constructor(ImageUploader $upload){
+function __construct(ImageUploader $upload){
     $this->upload = $upload;
 }
 
