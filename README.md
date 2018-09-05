@@ -161,7 +161,7 @@ use Humps\FileUploader\Uploader;
 
 private $upload;
 
-public __constructor(Uploader $upload){
+function __construct(Uploader $upload){
     $this->upload = $upload;
 }
 ```
